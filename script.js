@@ -3,10 +3,15 @@ const display = document.querySelector('.display');
 const buttons = document.querySelectorAll('.button');
 
 buttons.forEach((bttn) => {
-    bttn.addEventListener("click", (event) => {
+    bttn.addEventListener("mousedown", (event) => {
+        event.target.style.backgroundColor = "rgb(90, 90, 90)";
         action(event.target);
-    })
-})
+    });
+
+    bttn.addEventListener("mouseup", (event) => {
+        event.target.style.backgroundColor = "rgb(63, 63, 63)";
+    });
+});
 
 let a = null;
 // this switch state defines if number on display should be replaced with clicked one (true) or wrote next to existing ones (false).
@@ -98,8 +103,15 @@ function operate(operation){
         if (operation == "/") {
             a /= parseFloat(display.textContent);
         }
-            
-        display.textContent = a.toString();
+        
+        if(a.toString().length > 9) {
+            display.textContent = "too long";
+            setTimeout(() => {
+                clear();
+            }, 2000);
+            return "error";
+        } else display.textContent = a.toString();
+        
     }
     lastOperator = operation;
 }
